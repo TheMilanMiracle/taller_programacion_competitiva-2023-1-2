@@ -1,1 +1,1 @@
-CC4002 taller de programación competitiva A(Otoño) y B(Primavera)
+# CC4002 taller de programación competitiva A(Otoño) y B(Primavera)
