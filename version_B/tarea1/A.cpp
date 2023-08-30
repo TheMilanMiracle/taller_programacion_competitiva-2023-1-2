@@ -15,7 +15,7 @@ int main(){
             if(op == 1){
                 q.push(num);
                 pq.push(num);
-                s.push(num);
+                s.push(num); 
             }
             else{
                 if(q.empty() || num != q.front()){
