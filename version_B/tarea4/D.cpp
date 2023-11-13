@@ -14,7 +14,7 @@ struct segment_tree{
   }
 
   int merge(int a, int b){
-    return a & b;
+    return max(a,b);
   }
 
   void build(int n, int i, int j, vector <int> &A){
@@ -45,7 +45,7 @@ struct segment_tree{
     }
     // caso 2: [i,j] está fuera de [l,r]
     if(j < l || r < i){
-      return -1;
+      return 0;
     }
     // caso 3: contenido parcialmente
     int mid = (i+j)/2;
@@ -73,44 +73,48 @@ struct segment_tree{
   }
 };
 
+string Sigma = "abcdefghijklmnopqrstuvwxyz";
+int sigma_len = 25;
+vector<segment_tree> forest;
 
 int main(){
-  int t, n, a_i, q, l, x;
-  cin >> t;
+  string input;
+  int q, a, b;
+  char c;
+  cin >> input >> q;
 
-  while(t--){
-    cin >> n;
+  int input_len = input.length();
 
-    vector<int> a(n);
-
-    for(int i = 0; i < n; i++){
-      cin >> a_i;
-      a[i] = a_i;
+  for(int l = 0; l < sigma_len; l++){//fill forest
+    vector<int> v(input_len);
+    for(int i = 0; i<input_len; i++){
+      input[i] == Sigma[l] ? v[i] = 1: v[i] = 0;
+    }
+      segment_tree t(v);
+      forest.push_back(t);
     }
 
-    segment_tree tree(a);
+  while(q--){
+    cin >> a;
 
-    cin >> q;
-    
-    while(q--){
-      cin >> l >> x;
-
-      if(tree.query(l-1,l-1) < x) cout << -1 << " ";
-      else{
-        int i = l, j = n, k;
-
-        while(i != j){
-          k = (i+j+1)/2;
-
-          if(tree.query(l-1, k-1) < x) j = k-1;
-          else i = k;
-
-        }
-
-        cout << j << " ";
+    if(a == 2){
+      int ocurrences = 0;
+      cin >> a >> b;
+            
+      for(int i = 0; i<sigma_len;i++){
+        ocurrences += forest[i].query(a-1,b-1);
       }
+      cout << ocurrences << endl;
     }
-    cout << endl;
+
+    else{
+      cin >> b >> c; 
+
+      forest[input[b-1] - 'a'].update(b-1, 0);
+      forest[c - 'a'].update(b-1, 1);
+
+      input[b-1] = c;
+    }
 
   }
 
